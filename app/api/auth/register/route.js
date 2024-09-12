@@ -12,7 +12,7 @@ export async function POST(req) {
 
         const isExists = await User.exists({ email });
         if (isExists) {
-            return NextResponse.status(400).json({ message: "Email already exists. Please Sign in" });
+            throw new Error("An account with this email already exists");
         }
 
         const verificationToken = jwt.sign(
@@ -24,16 +24,16 @@ export async function POST(req) {
         const user = await User.create({ email, password, name, verificationToken })
 
         if (!user) {
-            return NextResponse.status(400).json({ message: "Something went wrong" });
+            return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
         }
         console.log("User registered successfully: ", user);
 
         await sendVerificationEmail(email, verificationToken);
 
-        return NextResponse.status(200).json({ success: true, message: "User registered successfully registered" });
+        return NextResponse.json({ success: true, message: "User registered successfully registered" }, { status: 200 });
 
     } catch (error) {
         console.error("Register error: ", error);
-        return NextResponse.status(500).json({ message: error.message || "Something went wrong went register the user" });
+        return NextResponse.json({ message: error.message || "Something went wrong went register the user" }, { status: 400 });
     }
 }

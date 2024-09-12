@@ -10,6 +10,18 @@ import {
     CardHeader,
     CardTitle
 } from "@/components/ui/card"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import axios from "axios"
@@ -17,6 +29,7 @@ import toast from "react-hot-toast"
 
 export default function SignUp() {
     const [processing, setProcessing] = useState(false)
+    const [showDialog, setShowDialog] = useState(false)
 
     async function handleRegister(e) {
         setProcessing(true)
@@ -28,13 +41,16 @@ export default function SignUp() {
             const name = form.name.value;
 
             const res = await axios.post('/api/auth/register', { email, password, name })
-            console.log(res.data);
-
+            console.log(res?.data);
+            if (res?.data?.success) {
+                e.target.reset()
+                setShowDialog(true)
+            }
             setProcessing(false)
         } catch (error) {
             setProcessing(false)
             console.error("Register form submission error:", error);
-            toast.error(error.message)
+            toast.error(error?.response?.data?.message)
         }
     }
 
@@ -80,6 +96,23 @@ export default function SignUp() {
                     </CardFooter>
                 </form>
             </Card>
-        </div>
+            <div>
+                <AlertDialog open={showDialog}>
+                    <AlertDialogContent className="max-w-md w-[95%] rounded-lg">
+                        <AlertDialogHeader>
+                            <AlertDialogTitle className="text-center text-2xl sm:text-3xl">Check Your Email</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                <p className="text-center text-foreground">We have sent you a confirmation link to your email</p>
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <div className="flex justify-center w-full">
+                                <Button onClick={() => setShowDialog(false)} type="button" variant="default">Ok</Button>
+                            </div>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            </div>
+        </div >
     )
 }
