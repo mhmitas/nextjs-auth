@@ -3,6 +3,8 @@ import { User } from "@/lib/database/user.model";
 import { sendVerificationEmail } from "@/lib/utils/sendEmail";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 export async function POST(req) {
     try {
@@ -15,13 +17,25 @@ export async function POST(req) {
             throw new Error("An account with this email already exists");
         }
 
+        const tokenSecret = crypto.randomBytes(32).toString('hex')
+
         const verificationToken = jwt.sign(
             { email },
-            process.env.EMAIL_VERIFICATION_SECRET,
-            { expiresIn: "1d" }
+            tokenSecret,
+            { expiresIn: "365d" }
         )
 
-        const user = await User.create({ email, password, name, verificationToken })
+        const hashedPassword = await bcrypt.hash(password, 10)
+
+        const result = await User.create({
+            email,
+            password: hashedPassword,
+            name,
+            verificationToken: tokenSecret,
+            provider: "email"
+        })
+
+        const user = await User.findById(result?._id).select("-password -verificationToken")
 
         if (!user) {
             return NextResponse.json({ message: "Something went wrong" }, { status: 500 });

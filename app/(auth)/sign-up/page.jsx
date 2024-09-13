@@ -12,14 +12,10 @@ import {
 } from "@/components/ui/card"
 import {
     AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
-    AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
 import { Label } from "@/components/ui/label"
@@ -80,7 +76,7 @@ export default function SignUp() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" name="password" type="password" placeholder="Enter your password" required />
+                            <Input id="password" name="password" type="text" placeholder="Enter your password" required />
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col items-start space-y-2">
@@ -101,9 +97,7 @@ export default function SignUp() {
                     <AlertDialogContent className="max-w-md w-[95%] rounded-lg">
                         <AlertDialogHeader>
                             <AlertDialogTitle className="text-center text-2xl sm:text-3xl">Check Your Email</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                <p className="text-center text-foreground">We have sent you a confirmation link to your email</p>
-                            </AlertDialogDescription>
+                            <p className="text-center text-foreground">We have sent you a confirmation link to your email</p>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <div className="flex justify-center w-full">
