@@ -34,9 +34,9 @@ export default function SignUp() {
             const form = e.target
             const email = form.email.value
             const password = form.password.value
-            const name = form.name.value;
+            const firstName = form.firstName.value;
 
-            const res = await axios.post('/api/auth/register', { email, password, name })
+            const res = await axios.post('/api/auth/register', { email, password, firstName })
             console.log(res?.data);
             if (res?.data?.success) {
                 e.target.reset()
@@ -54,16 +54,14 @@ export default function SignUp() {
         <div className="flex items-center justify-center min-h-screen bg-muted dark:bg-background my-container py-4">
             <Card className="w-full max-w-md">
                 <CardHeader>
-                    <CardTitle>Sign Up</CardTitle>
-                    <CardDescription>
-                        Create a new account to get started.
-                    </CardDescription>
+                    <CardTitle className="text-2xl">Sign Up</CardTitle>
+                    <p className="text-foreground text-base">Create a new account to get started.</p>
                 </CardHeader>
                 <form onSubmit={handleRegister}>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Name</Label>
-                            <Input id="name" name="name" placeholder="Enter your name" required />
+                            <Input id="name" name="firstName" placeholder="Enter your name" required />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>

@@ -8,7 +8,7 @@ import crypto from "crypto";
 
 export async function POST(req) {
     try {
-        const { email, password, name } = await req.json();
+        const { email, password, firstName } = await req.json();
 
         await connectDB()
 
@@ -30,7 +30,7 @@ export async function POST(req) {
         const result = await User.create({
             email,
             password: hashedPassword,
-            name,
+            firstName,
             verificationToken: tokenSecret,
             provider: "email"
         })

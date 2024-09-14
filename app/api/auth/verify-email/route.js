@@ -24,7 +24,6 @@ export async function POST(request) {
 
         // find the user's token secret (verificationToken) associated with the email address
         const tokenSecret = await User.findOne({ email: urlEmail }).select("verificationToken")
-        console.log({ tokenSecret: tokenSecret })
 
         // Verify the token using the token secret
         let decodedToken = jwt.verify(token, tokenSecret?.verificationToken, (err, decoded) => {
@@ -41,7 +40,6 @@ export async function POST(request) {
             { email: decodedToken.email },
             {
                 isVerified: true,
-                // TODO: change it to null
                 verificationToken: null
             },
             { new: true }

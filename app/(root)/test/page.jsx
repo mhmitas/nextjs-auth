@@ -1,13 +1,13 @@
+import { auth } from '@/auth';
 import React from 'react';
-import crypto from "crypto"
 
-const page = () => {
+const page = async () => {
 
-    const bytes = crypto.randomBytes(32).toString('hex')
+    const session = await auth()
 
     return (
-        <div>
-            <p className='w-full overflow-auto'>{bytes}</p>
+        <div className='my-container'>
+            {JSON.stringify(session?.user)?.split('","').map((value, idx) => <p key={idx} className='text-xl p-1'>{value}</p>)}
         </div>
     );
 };
