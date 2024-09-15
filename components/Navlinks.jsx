@@ -9,6 +9,7 @@ const NavLinks = () => {
 
     const navItems = [
         { name: "Home", href: "/" },
+        { name: "Test", href: "/test" },
     ]
 
     return (
@@ -18,7 +19,7 @@ const NavLinks = () => {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                        "p-0 py-1 px-[2px] text-sm font-medium transition-colors border-b-2 border-transparent hover:border-blue-600 rounded-none",
+                        "py-1 px-[2px] text-sm font-medium transition-colors border-b-2 border-transparent hover:border-blue-600 rounded-none",
                         pathname === item.href && "border-b-2 border-blue-600"
                     )}
                 >

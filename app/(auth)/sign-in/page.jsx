@@ -1,16 +1,15 @@
 'use client'
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { useState } from "react"
-import { signInUser } from "@/lib/actions/user.action"
-import { useRouter } from "next/navigation"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import { Oauth2SignIn, signInUser } from "@/lib/actions/user.action";
+import { Separator } from "@/components/ui/separator"
+import { FcGoogle } from "react-icons/fc";
 
 export default function SignIn() {
     const [error, setError] = useState("")
-    const router = useRouter()
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -23,8 +22,6 @@ export default function SignIn() {
             } else {
                 setError("")
             }
-            // Redirect to dashboard
-            // router.push('/')
         } catch (error) {
             console.error("SignIn error: " + error);
             setError(error.message);
@@ -33,16 +30,16 @@ export default function SignIn() {
 
     return (
         <div className="flex items-center justify-center min-h-screen my-container py-4">
-            <Card className="w-full max-w-md">
-                <CardHeader>
-                    <CardTitle className="text-2xl">Sign In</CardTitle>
+            <div className="w-full max-w-md border p-6 rounded-lg">
+                <div>
+                    <h1 className="text-2xl">Sign In</h1>
                     <p className="text-foreground text-base">
                         Enter your email and password to access your account.
                     </p>
                     {error && <p className="text-red-500 text-sm">{error}</p>}
-                </CardHeader>
+                </div>
                 <form onSubmit={handleSubmit}>
-                    <CardContent className="space-y-4">
+                    <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
@@ -65,22 +62,27 @@ export default function SignIn() {
                                 </Link>
                             </div>
                         </div>
-                    </CardContent>
-                    <CardFooter className="flex flex-col items-start space-y-2">
-                        <Button type="submit" className="w-full">
-                            Sign In
-                        </Button>
-                        <div className="">
-                            <div>
-                                <Link href="/sign-up" className="text-sm">
-                                    Already have an account?
-                                    <span className="text-blue-500 hover:underline"> Sign Up</span>
-                                </Link>
-                            </div>
+                        <div className="mb-2">
+                            <Button type="submit" className="w-full">
+                                Sign In
+                            </Button>
                         </div>
-                    </CardFooter>
+                    </div>
+                    <div>
+                        <Link href="/sign-up" className="text-sm">
+                            Already have an account?
+                            <span className="text-blue-500 hover:underline"> Sign Up</span>
+                        </Link>
+                    </div>
                 </form>
-            </Card>
+                <Separator className="my-4" />
+                <form action={() => Oauth2SignIn("google")}>
+                    <Button type="submit" className="w-full">
+                        <FcGoogle className="text-2xl mr-2" />
+                        Sign In with Google
+                    </Button>
+                </form>
+            </div>
         </div>
     )
 }

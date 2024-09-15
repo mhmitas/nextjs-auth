@@ -32,7 +32,7 @@ export async function POST(req) {
             password: hashedPassword,
             firstName,
             verificationToken: tokenSecret,
-            provider: "email"
+            provider: "credentials"
         })
 
         const user = await User.findById(result?._id).select("-password -verificationToken")
