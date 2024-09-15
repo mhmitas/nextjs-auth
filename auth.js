@@ -27,6 +27,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     if (!user) {
                         throw new Error("User not found, 😞")
                     }
+                    if (user.provider !== 'credentials') {
+                        throw new Error("User is not using credentials provider")
+                    }
                     if (!user.isVerified || user.isVerified !== true) {
                         throw new Error("Email is not verified")
                     }
@@ -87,7 +90,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         })
                         console.log("New user, created by google:", newUser);
                         // if the user created successfully, then update the user with with the new user
-                        if (newUser) {
+                        if (!newUser) {
                             throw new Error("Google sign in failed");
                         }
 
